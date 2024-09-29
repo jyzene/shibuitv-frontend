@@ -1,0 +1,19 @@
+/* src/index.css */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@font-face {
+    font-family: "agrandir";
+    src: url(../fonts/agrandir.OTF) format('opentype');
+}
+
+@font-face {
+    font-family: "montserrat";
+    src: url(../fonts/montserrat.TTF) format('opentype');
+}
+
+@font-face {
+    font-family: "newyork";
+    src: url(../fonts/newyork.OTF) format('opentype');
+}

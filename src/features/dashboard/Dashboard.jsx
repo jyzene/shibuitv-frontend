@@ -1,5 +1,5 @@
 import React from "react";
-import FormLayout from "../../components/FormLayout/FormLayout";
+import DashboardLayout from "../../components/DashboardLayout/DashboardLayout";
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -23,7 +23,7 @@ const Dashboard = () => {
 
     return(
         <>
-            <FormLayout>
+            <DashboardLayout>
                 <h1 className="text-lg font-subtitle text-wood">Welcome, Keren</h1>
                 <h4 className="text-m font-subtitle text-wood">What do you want to do today?</h4>
                 <div className="space-y-4 space-x-2">
@@ -43,7 +43,7 @@ const Dashboard = () => {
                     Create Post
                     </button> */}
                 </div>
-            </FormLayout>
+            </DashboardLayout>
         </>
     )
 }

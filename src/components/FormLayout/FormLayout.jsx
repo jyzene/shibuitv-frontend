@@ -4,7 +4,7 @@ const FormLayout = ({ children }) => {
 
     return(
         <>
-            <div className="flex flex-col mt-24 pl-20 place-items-start justify-start h-screen bg-paper">
+            <div className="flex flex-row mt-24 pl-20 place-items-start h-screen bg-paper">
                 {children}
             </div>
         </>

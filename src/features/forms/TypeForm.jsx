@@ -1,7 +1,13 @@
 import React, {useState,useEffect} from "react";
+import FormLayout from "../../components/FormLayout/FormLayout";
+import TitleForm from "../../components/FormLayout/TitleForm";
+import SubmitButton from "../../components/FormLayout/Button";
+import InputForm from "../../components/FormLayout/InputForm";
+import Containers from "../../components/FormLayout/Containers";
+import TableForm from "../../components/FormLayout/TableForm";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom';
 
 const TypeForm = () => {
     const [error, setError] = useState('');
@@ -18,7 +24,7 @@ const TypeForm = () => {
         const response = await axios.get('http://127.0.0.1:8000/detallesPost/typePost/');
         setTypes(response.data);
         } catch (error) {
-            Swal.fire('Error', 'No se pudo cargar los tipos', 'error');
+            Swal.fire('Error', 'Content Types could not be loaded', 'error');
         }
     };
 
@@ -34,14 +40,14 @@ const TypeForm = () => {
 
         try {
           const response = await axios.post('http://127.0.0.1:8000/detallesPost/typePost/', type);
-          Swal.fire('Éxito', 'tipo agregado!', 'success');
+          Swal.fire('Éxito', 'Type was added', 'success');
           setType({
             nombreTipo: '',
             duracionTipo: ''
           });
           fetchTypes(); // Actualizar la lista de categorías
         } catch (error) {
-            Swal.fire('Error', 'No se pudo añadir el tipo', 'error');
+            Swal.fire('Error', 'Type could not be added', 'error');
         }
       };
 
@@ -68,16 +74,16 @@ const TypeForm = () => {
     const deleteType = async (id) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/detallesPost/typePost/${id}`);
-            Swal.fire('Éxito', 'Tipo eliminado exitosamente', 'success');
+            Swal.fire('Éxito', 'Type deleted succesfully!', 'success');
             fetchTypes(); // Actualizar lista después de la eliminación
         } catch (error) {
-            Swal.fire('Error', 'No se pudo eliminar el tipo', 'error');
+            Swal.fire('Error', 'Type could not be deleted', 'error');
         }
     };
 
     const selectTypeForEdit = async (type) => {
         const { value: formValues } = await Swal.fire({
-            title: "Modify the Type",
+            title: "Modify Type",
             html:
                 `<label for="swal-input1">Type Name</label>` +
                 `<input id="swal-input1" class="swal2-input" value="${type.nombreTipo}">` +
@@ -91,7 +97,7 @@ const TypeForm = () => {
     
                 // Validar los campos antes de confirmar
                 if (!newName || isNaN(newDuration)) {
-                    Swal.showValidationMessage('Ambos campos deben ser agregados y ser validos!');
+                    Swal.showValidationMessage('Fields should be filled and be valid!');
                     return false; // Evita que se cierre el modal si hay un error
                 }
                 return [newName, newDuration];
@@ -106,107 +112,52 @@ const TypeForm = () => {
                     nombreTipo: newName,
                     duracionTipo: newDuration
                 });
-                Swal.fire('Success', 'Tipo modificado correctamente', 'success');
+                Swal.fire('Success', 'Type was modified', 'success');
                 fetchTypes(); // Volvemos a cargar los tipos
             } catch (error) {
-                Swal.fire('Error', 'No se pudo modificar el tipo', 'error');
+                Swal.fire('Error', 'Type could not be modified', 'error');
             }
         }
     };
-    // Función para seleccionar la categoría a editar
-    // const selectTypeForEdit = async (type) => {
-    //     // setEditCategoryId(category.id);
-    //     // setEditCategoryName(category.nombreCategoria);
-    //     const { value: newCategoryName } = await Swal.fire({
-    //         title: "Modify the category",
-    //         input: "text",
-    //         inputLabel: "Category",
-    //         inputValue: category.nombreCategoria,
-    //         showCancelButton: true,
-    //         inputValidator: (value) => {
-    //           if (!value) {
-    //             return "You need to write something!";
-    //           }
-    //         }
-    //     });
-    //     if (newCategoryName) {
-    //         // Mostrar mensaje con el nuevo valor ingresado (opcional)
-    //         Swal.fire(`The new category name is: ${newCategoryName}`);
-    
-    //         // Aquí llamamos a la función para actualizar la categoría
-    //         try {
-    //             await axios.put(`http://127.0.0.1:8000/detallesPost/categoryPost/${category.id}`, { nombreCategoria: newCategoryName });
-    //             Swal.fire('Éxito', 'Categoría modificada exitosamente', 'success');
-    //             fetchCategories(); // Volvemos a cargar las categorías
-    //             setEditCategoryId(null); // Salir del modo de edición
-    //             setEditCategoryName("");
-    //         } catch (error) {
-    //             Swal.fire('Error', 'No se pudo modificar la categoría', 'error');
-    //         }
-    //     }
-    // };
 
     return(
         <>
-            <div className="p-8 bg-paper min-h-screen">
-                <h2 className="text-lg font-title mb-4">Agregar Tipos</h2>
-                <form onSubmit={handleSubmit} className="mb-6">
-                    <div className="mb-4">
-                        <label htmlFor="nombreTipo" className="block text-sm font-medium text-gray-700">Nombre del tipo:</label>
-                        <input
-                            type="text"
-                            id="nombreTipo"
-                            name="nombreTipo"
-                            value={type.nombreTipo}
-                            onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green focus:border-green"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="nombreTipo" className="block text-sm font-medium text-gray-700">Duracion Maxima:</label>
-                        <input
-                            type="number"
-                            step="0.01" // Esto permite decimales
-                            id="duracionTipo"
-                            name="duracionTipo"
-                            value={type.duracionTipo}
-                            onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green focus:border-green"
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="bg-green text-white font-bold py-2 px-4 rounded-full">
-                        Agregar Tipo
-                    </button>
-                </form>
-                <h3 className="text-md font-title mb-4">Tipos Existentes</h3>
-                <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
-                    <tbody>
-                        {types.length > 0 ? (
-                            types.map((type) => (
-                            <tr key={type.id}>
-                                <td className="border px-4 py-2">{type.nombreTipo}</td>
-                                <td className="border px-4 py-2">{type.duracionTipo}</td>
-                                <td className="border px-4 py-2">
-                                    <button onClick={() => selectTypeForEdit(type)} className="bg-blue-500 text-wood rounded px-2 py-1 mr-2">
-                                        Editar
-                                    </button>
-                                    <button onClick={() => deleteType(type.id)} className="bg-red-500 text-wood rounded px-2 py-1">
-                                        Eliminar
-                                    </button>
-                                </td>
-                            </tr>
-                            ))
-                        ) : (
-                            <tr>
-                            <td className="border px-4 py-2" colSpan="2">No hay tipos registrados.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            <FormLayout>
+                <Containers>
+                    <TitleForm text="Add Content Type"/>
+                    <form onSubmit={handleSubmit} className="mb-6">
+                        <div className="mb-4">
+                            <InputForm
+                                type="text"
+                                id="nombreTipo"
+                                name="nombreTipo"
+                                label="New type"
+                                value={type.nombreTipo}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <InputForm
+                                type="number"
+                                id="duracionTipo"
+                                name="duracionTipo"
+                                label="Max. time length"
+                                value={type.duracionTipo}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <SubmitButton text="submit"/>
+                    </form>
+                </Containers>
+                <Containers>
+                    <TableForm 
+                            columns={['id','nombreTipo','duracionTipo']}
+                            data={types}
+                            onEdit={selectTypeForEdit}
+                            onDelete={deleteType}
+                    />
+                </Containers>
+            </FormLayout>
         </>
     )
 }

@@ -5,11 +5,9 @@ import TitleForm from "../../components/FormLayout/TitleForm";
 import SubmitButton from "../../components/FormLayout/Button";
 import InputForm from "../../components/FormLayout/InputForm";
 import Containers from "../../components/FormLayout/Containers";
+import TableForm from "../../components/FormLayout/TableForm";
 import axios from 'axios';
 import Swal from 'sweetalert2'
-import TableForm from "../../components/FormLayout/TableForm";
-
-
 
 const CategoryForm = () => {
     const [error, setError] = useState('');

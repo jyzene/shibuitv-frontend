@@ -112,14 +112,14 @@ const CategoryForm = () => {
                     <TitleForm text="Add Categories"/>
                     <form onSubmit={handleSubmit} className="mb-6">
                         <div className="mb-4">
-                        <InputForm
-                            type="text"
-                            id="category"
-                            name="category"
-                            label="new category"
-                            value={category}
-                            onChange={handleChange}
-                        />
+                            <InputForm
+                                type="text"
+                                id="category"
+                                name="category"
+                                label="new category"
+                                value={category}
+                                onChange={handleChange}
+                            />
                         </div>
                         <SubmitButton text="Add Category"/>
                     </form>

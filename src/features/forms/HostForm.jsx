@@ -1,7 +1,14 @@
 import React, {useState,useEffect} from "react";
-import axios from 'axios';
-import Swal from 'sweetalert2'
+import FormLayout from "../../components/FormLayout/FormLayout";
+import TitleForm from "../../components/FormLayout/TitleForm";
+import SubmitButton from "../../components/FormLayout/Button";
+import InputForm from "../../components/FormLayout/InputForm";
+import Containers from "../../components/FormLayout/Containers";
 import { useNavigate } from 'react-router-dom';
+import TableForm from "../../components/FormLayout/TableForm";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 const HostForm = () => {
     const [error, setError] = useState('');
@@ -20,7 +27,7 @@ const HostForm = () => {
         const response = await axios.get('http://127.0.0.1:8000/detallesPost/hostPost/');
         setHosts(response.data);
         } catch (error) {
-            Swal.fire('Error', 'No se pudo cargar los hosts', 'error');
+            Swal.fire('Error', 'Hosts could not be loaded', 'error');
         }
     };
 
@@ -46,7 +53,7 @@ const HostForm = () => {
           });
           fetchHosts(); // Actualizar la lista de categorías
         } catch (error) {
-            Swal.fire('Error', 'No se pudo añadir el host', 'error');
+            Swal.fire('Error', 'Host could not be added', 'error');
         }
       };
 
@@ -84,13 +91,13 @@ const HostForm = () => {
         const { value: formValues } = await Swal.fire({
             title: "Modify the Host",
             html:
-                `<label for="swal-input1">Host Name</label>` +
+                `<label for="swal-input1">Name</label>` +
                 `<input id="swal-input1" class="swal2-input" value="${host.nombresHost}">` +
-                `<label for="swal-input2">Host Lastname</label>` +
+                `<label for="swal-input2">Lastname</label>` +
                 `<input id="swal-input2" class="swal2-input" value="${host.apellidosHost}">` +
-                `<label for="swal-input3">Host address</label>` +
+                `<label for="swal-input3">address</label>` +
                 `<input id="swal-input3" class="swal2-input" value="${host.direccionHost}">` +
-                `<label for="swal-input4">Host phone number</label>` +
+                `<label for="swal-input4">phone number</label>` +
                 `<input id="swal-input4" class="swal2-input" type="number" value="${host.telefonoHost}">`,
             focusConfirm: false,
             showCancelButton: true,
@@ -102,7 +109,7 @@ const HostForm = () => {
     
                 // Validar los campos antes de confirmar
                 if (!newName || !newLastName || !newAddress || isNaN(newPhone)) {
-                    Swal.showValidationMessage('todos los campos deben ser agregados y ser validos!');
+                    Swal.showValidationMessage('All fields must be full and valid!');
                     return false; // Evita que se cierre el modal si hay un error
                 }
                 return [newName, newLastName, newAddress, newPhone];
@@ -119,10 +126,10 @@ const HostForm = () => {
                     direccionHost: newAddress,
                     telefonoHost: newPhone
                 });
-                Swal.fire('Success', 'host modificado correctamente', 'success');
+                Swal.fire('Success', 'Host has been modified', 'success');
                 fetchHosts(); // Volvemos a cargar los tipos
             } catch (error) {
-                Swal.fire('Error', 'No se pudo modificar a host', 'error');
+                Swal.fire('Error', 'Host could not be modified', 'error');
             }
         }
     };
@@ -130,87 +137,62 @@ const HostForm = () => {
 
     return(
         <>
-            <div className="p-8 bg-paper min-h-screen">
-                <h2 className="text-lg font-title mb-4">Agregar Hosts</h2>
-                <form onSubmit={handleSubmit} className="mb-6">
-                    <div className="mb-4">
-                        <label htmlFor="nombresHost" className="block text-sm font-medium text-gray-700">Nombre(s) del Host:</label>
-                        <input
-                            type="text"
-                            id="nombresHost"
-                            name="nombresHost"
-                            value={host.nombresHost}
-                            onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green focus:border-green"
+            <FormLayout>
+                <Containers>
+                    <TitleForm text="Agregar Hosts"/>
+                    <form onSubmit={handleSubmit} className="mb-6">
+                        <div className="mb-4">
+                            <InputForm
+                                    type="text"
+                                    id="nombresHost"
+                                    name="nombresHost"
+                                    label="Host's Name(s)"
+                                    value={host.nombresHost}
+                                    onChange={handleChange}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <InputForm
+                                type="text"
+                                id="apellidosHost"
+                                name="apellidosHost"
+                                label="Host's Lastname"
+                                value={host.apellidosHost}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <InputForm
+                                type="text"
+                                id="direccionHost"
+                                name="direccionHost"
+                                label="Host's Address"
+                                value={host.direccionHost}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <InputForm
+                                type="text"
+                                id="telefonoHost"
+                                name="telefonoHost"
+                                label="Host's Phone Number"
+                                value={host.telefonoHost}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <SubmitButton text="Add Host"/>
+                    </form>
+                </Containers>
+                <Containers>
+                    <TableForm 
+                        columns={['id','nombresHost','apellidosHost','direccionHost','telefonoHost']}
+                        data={hosts}
+                        onEdit={selectHostForEdit}
+                        onDelete={deleteHost}
                         />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="apellidosHost" className="block text-sm font-medium text-gray-700">Apellido(s):</label>
-                        <input
-                            type="text"
-                            id="apellidosHost"
-                            name="apellidosHost"
-                            value={host.apellidosHost}
-                            onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green focus:border-green"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="direccionHost" className="block text-sm font-medium text-gray-700">Direccion:</label>
-                        <input
-                            type="text"
-                            id="direccionHost"
-                            name="direccionHost"
-                            value={host.direccionHost}
-                            onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green focus:border-green"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="nombreTipo" className="block text-sm font-medium text-gray-700">Telefono: </label>
-                        <input
-                            type="number"
-                            id="telefonoHost"
-                            name="telefonoHost"
-                            value={host.telefonoHost}
-                            onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green focus:border-green"
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="bg-green text-white font-bold py-2 px-4 rounded-full">
-                        Agregar Host
-                    </button>
-                </form>
-                <h3 className="text-md font-title mb-4">Hosts Existentes</h3>
-                <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
-                    <tbody>
-                        {hosts.length > 0 ? (
-                            hosts.map((host) => (
-                            <tr key={host.id}>
-                                <td className="border px-4 py-2">{host.apellidosHost}, {host.nombresHost}</td>
-                                <td className="border px-4 py-2">{host.direccionHost}</td>
-                                <td className="border px-4 py-2">{host.telefonoHost}</td>
-                                <td className="border px-4 py-2">
-                                    <button onClick={() => selectHostForEdit(host)} className="bg-blue-500 text-wood rounded px-2 py-1 mr-2">
-                                        Editar
-                                    </button>
-                                    <button onClick={() => deleteHost(host.id)} className="bg-red-500 text-wood rounded px-2 py-1">
-                                        Eliminar
-                                    </button>
-                                </td>
-                            </tr>
-                            ))
-                        ) : (
-                            <tr>
-                            <td className="border px-4 py-2" colSpan="2">No hay hosts registrados.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                </Containers>
+            </FormLayout>
         </>
     )
 }

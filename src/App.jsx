@@ -12,6 +12,7 @@ import TypeForm from './features/forms/TypeForm'
 import HostForm from './features/forms/HostForm'
 import UsersForm from './features/forms/UsersForm'
 import FormLayout from './components/FormLayout/FormLayout'
+import PostForm from './features/forms/PostForm'
 //import { useAuth } from './auth'
 import './App.css'
 
@@ -31,6 +32,7 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route path='types' element={<TypeForm/>}/>
       <Route path='host' element={<HostForm/>}/>
       <Route path='users' element={<UsersForm/>}/>
+      <Route path='Posts' element={<PostForm/>}/>
     </Route>
   </Route>
 ))

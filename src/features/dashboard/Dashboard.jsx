@@ -21,6 +21,10 @@ const Dashboard = () => {
         navigate('/admin/users');
     };
 
+    const handleAddPost = () => { //basicamente actualiza el array? de formData conforme se llenan los campos del form
+        navigate('/admin/Posts');
+    };
+
     return(
         <>
             <DashboardLayout>
@@ -28,20 +32,20 @@ const Dashboard = () => {
                 <h4 className="text-m font-subtitle text-wood">What do you want to do today?</h4>
                 <div className="space-y-4 space-x-2">
                     <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handleAddCategory}>
-                    Add Category
+                    Add Categories
                     </button>
                     <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handleAddHost}>
-                    Add Creator
+                    Add Hosts
                     </button>
                     <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handleAddTypes}>
                     Add a Post Type
                     </button>
                     <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handleAddUsers}>
-                    Create User
+                    Users
                     </button>
-                    {/* <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64">
-                    Create Post
-                    </button> */}
+                    <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handleAddPost}>
+                    Create a new Post
+                    </button>
                 </div>
             </DashboardLayout>
         </>

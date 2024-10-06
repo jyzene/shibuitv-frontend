@@ -9,6 +9,7 @@ const LoginForm = () => {
         passwordUser: ''
     });
 
+    const [username, setUsername] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -21,11 +22,8 @@ const LoginForm = () => {
             const response = await axios.post('http://127.0.0.1:8000/adminUsers/login', formData);
 
             if (response.status === 200) {
-                // Si el login es exitoso, puedes almacenar el token o datos del usuario en localStorage o context
-                //localStorage.setItem('token', response.data.token);
-                // Redireccionar al dashboard u otra página
+                localStorage.setItem('username', JSON.stringify(username));
                 navigate('/admin/dashboard');
-                //console.log('funciono! :D')
             }
         } catch (error) {
         // Manejo de errores si las credenciales no son válidas
@@ -93,44 +91,6 @@ const LoginForm = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="bg-wood">
-                <section className="flex flex-col text-center ml-8 mr-8">
-                        <h2 className="font-title text-paper text-center text-xl mt-24 tracking-wide lg:text-xxxl mb-0">
-                            Shibui
-                        </h2>
-                        <section className="w-1/4 text-center">
-                            <form onSubmit={handleSubmit}>
-                                <div className="">
-                                    <label className="text-gray-700 font-subtitle" htmlFor="nombreUser">Username</label>
-                                    <input
-                                        type="text"
-                                        id="nombreUser"
-                                        name="nombreUser"
-                                        value={formData.nombreUser}
-                                        onChange={handleChange}
-                                        className="bg-paper font-paragraph text-wood border-2 border-dark-green p-2 rounded-full w-full mt-4"
-                                        required
-                                    />
-                                </div>
-
-                                <div>
-                                    <label htmlFor="passwordUser">Password</label>
-                                    <input
-                                        type="password"
-                                        id="passwordUser"
-                                        name="passwordUser"
-                                        value={formData.passwordUser}
-                                        onChange={handleChange}
-                                        className="bg-paper font-paragraph text-wood border-2 border-dark-green p-2 rounded-full w-full mt-4"
-                                        required
-                                    />
-                                </div>
-
-                                <button type="submit">Iniciar Sesión</button>
-                            </form>
-                        </section>
-                </section>
-            </div> */}
         </>
     )
 }

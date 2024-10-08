@@ -33,8 +33,14 @@ const PostForm = () => {
 
     // Función para obtener los tipos desde el API
     const fetchTypes = async () => {
+        const token = localStorage.getItem('token');
+
         try {
-        const response = await axios.get('http://127.0.0.1:8000/detallesPost/typePost/');
+        const response = await axios.get('http://127.0.0.1:8000/detallesPost/typePost/', {
+            headers: {
+              Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+        });
         setTypes(response.data);
         } catch (error) {
             Swal.fire('Error', 'Content Types could not be loaded', 'error');
@@ -42,8 +48,14 @@ const PostForm = () => {
     };
 
     const fetchCategories = async () => {
+        const token = localStorage.getItem('token');
+
         try {
-        const response = await axios.get('http://127.0.0.1:8000/detallesPost/categoryPost/');
+        const response = await axios.get('http://127.0.0.1:8000/detallesPost/categoryPost/', {
+            headers: {
+              Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+        });
         setCategories(response.data);
         } catch (error) {
             Swal.fire('Error', 'Categories could not be loaded', 'error');
@@ -51,8 +63,14 @@ const PostForm = () => {
     };
 
     const fetchHosts = async () => {
+        const token = localStorage.getItem('token');
+
         try {
-        const response = await axios.get('http://127.0.0.1:8000/detallesPost/hostPost/');
+        const response = await axios.get('http://127.0.0.1:8000/detallesPost/hostPost/', {
+            headers: {
+              Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+        });
         setHosts(response.data);
         } catch (error) {
             Swal.fire('Error', 'Hosts could not be loaded', 'error');
@@ -68,10 +86,15 @@ const PostForm = () => {
     // Enviar el formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
 
         try {
           console.log('info ', post)
-          const response = await axios.post('http://127.0.0.1:8000/Posts/EstadoPost/', post);
+          const response = await axios.post('http://127.0.0.1:8000/Posts/EstadoPost/', post, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+        });
           Swal.fire('Éxito', 'Post was added', 'success');
           setPost({
             idPostInfo: {  // Datos para crear el estado asociado al post
@@ -146,7 +169,7 @@ const PostForm = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <InputForm
                                 type="text"
                                 id="descripPost"
@@ -156,7 +179,7 @@ const PostForm = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <InputForm
                                 type="number"
                                 id="duracionPost"
@@ -166,7 +189,7 @@ const PostForm = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <InputForm
                                 type="text"
                                 id="urlPost"
@@ -176,7 +199,7 @@ const PostForm = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <InputForm
                                 type="text"
                                 id="thumbnailPost"
@@ -186,7 +209,7 @@ const PostForm = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <label htmlFor="idHostPost">Select a Host</label>
                             <select
                                 id="idHostPost"
@@ -201,7 +224,7 @@ const PostForm = () => {
                                 ))}
                             </select>
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <label htmlFor="idCategoriaPost">Select Category</label>
                             <select
                                 id="idCategoriaPost"
@@ -216,7 +239,7 @@ const PostForm = () => {
                                 ))}
                             </select>
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <label htmlFor="idTipoPost">Select Type</label>
                             <select
                                 id="idTipoPost"
@@ -231,15 +254,15 @@ const PostForm = () => {
                                 ))}
                             </select>
                         </div>
-                        <div>
-                        <InputForm
-                                type="text"
-                                id="comentarioPost"
-                                name="comentarioPost"
-                                label="Comments"
-                                value={post.comentarioPost}
-                                onChange={handleChange}
-                            />
+                        <div className="mb-4">
+                            <InputForm
+                                    type="text"
+                                    id="comentarioPost"
+                                    name="comentarioPost"
+                                    label="Comments"
+                                    value={post.comentarioPost}
+                                    onChange={handleChange}
+                                />
                         </div>
                         <SubmitButton text="submit"/>
                     </form>

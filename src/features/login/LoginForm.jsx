@@ -2,8 +2,10 @@ import React, {useState} from "react";
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../auth/useAuth";
 
 const LoginForm = () => {
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         nombreUser: '',
         passwordUser: ''
@@ -22,11 +24,15 @@ const LoginForm = () => {
             const response = await axios.post('http://127.0.0.1:8000/adminUsers/login', formData);
 
             if (response.status === 200) {
-                localStorage.setItem('username', JSON.stringify(username));
+                const data = response.data;
+                login(data.access);
+                localStorage.setItem('user rol', JSON.stringify(data.user_rol));
+                localStorage.setItem('username', JSON.stringify(data.nombreUser));
                 navigate('/admin/dashboard');
             }
         } catch (error) {
         // Manejo de errores si las credenciales no son válidas
+            console.log(error)
             Swal.fire({
                 position: "top-end",
                 icon: "error",

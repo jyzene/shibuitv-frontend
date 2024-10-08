@@ -23,8 +23,14 @@ const HostForm = () => {
 
     // Función para obtener los tipos desde el API
     const fetchHosts = async () => {
+        const token = localStorage.getItem('token');
+
         try {
-        const response = await axios.get('http://127.0.0.1:8000/detallesPost/hostPost/');
+        const response = await axios.get('http://127.0.0.1:8000/detallesPost/hostPost/' , {
+            headers: {
+                Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+        });
         setHosts(response.data);
         } catch (error) {
             Swal.fire('Error', 'Hosts could not be loaded', 'error');
@@ -40,10 +46,14 @@ const HostForm = () => {
     // Enviar el formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
 
         try {
-          console.log(host)
-          const response = await axios.post('http://127.0.0.1:8000/detallesPost/hostPost/', host);
+          const response = await axios.post('http://127.0.0.1:8000/detallesPost/hostPost/', host, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+          });
           Swal.fire('Éxito', 'host agregado!', 'success');
           setHost({
             nombresHost: '',
@@ -78,8 +88,14 @@ const HostForm = () => {
 
     // Función para eliminar un tipo
     const deleteHost = async (id) => {
+        const token = localStorage.getItem('token');
+
         try {
-            await axios.delete(`http://127.0.0.1:8000/detallesPost/hostPost/${id}`);
+            await axios.delete(`http://127.0.0.1:8000/detallesPost/hostPost/${id}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                },
+              });
             Swal.fire('Éxito', 'Host eliminado exitosamente', 'success');
             fetchHosts(); // Actualizar lista después de la eliminación
         } catch (error) {
@@ -88,6 +104,7 @@ const HostForm = () => {
     };
 
     const selectHostForEdit = async (host) => {
+        const token = localStorage.getItem('token');
         const { value: formValues } = await Swal.fire({
             title: "Modify the Host",
             html:
@@ -125,6 +142,11 @@ const HostForm = () => {
                     apellidosHost: newLastName,
                     direccionHost: newAddress,
                     telefonoHost: newPhone
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                    },
                 });
                 Swal.fire('Success', 'Host has been modified', 'success');
                 fetchHosts(); // Volvemos a cargar los tipos

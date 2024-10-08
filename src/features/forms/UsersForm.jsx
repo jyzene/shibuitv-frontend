@@ -29,8 +29,14 @@ const UsersForm = () => {
 
     // Función para obtener los tipos desde el API
     const fetchUsers = async () => {
+        const token = localStorage.getItem('token');
+
         try {
-        const response = await axios.get('http://127.0.0.1:8000/adminUsers/usuarioDetalle/');
+        const response = await axios.get('http://127.0.0.1:8000/adminUsers/usuarioDetalle/', {
+                headers: {
+                  Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                },
+              });
         setUsers(response.data);
         } catch (error) {
             Swal.fire('Error', 'No se pudo cargar los usuarios', 'error');
@@ -46,10 +52,15 @@ const UsersForm = () => {
     // Enviar el formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
 
         try {
             console.log(user)
-            const response = await axios.post('http://127.0.0.1:8000/adminUsers/usuarioMaestro/', user);
+            const response = await axios.post('http://127.0.0.1:8000/adminUsers/usuarioMaestro/', user,{
+                headers: {
+                    Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                },
+            });
             console.log('respuesta ', response)
             //Swal.fire('Éxito', 'usuario agregado!', 'success');
             setUsers({
@@ -110,8 +121,14 @@ const UsersForm = () => {
 
     // Función para eliminar un tipo
     const deleteUser = async (id) => {
+        const token = localStorage.getItem('token');
+
         try {
-            await axios.delete(`http://127.0.0.1:8000/adminUsers/usuarioDetalle/${id}`);
+            await axios.delete(`http://127.0.0.1:8000/adminUsers/usuarioDetalle/${id}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                },
+            });
             Swal.fire('Éxito', 'Usuario eliminado exitosamente', 'success');
             fetchUsers(); // Actualizar lista después de la eliminación
         } catch (error) {

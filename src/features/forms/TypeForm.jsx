@@ -20,8 +20,14 @@ const TypeForm = () => {
 
     // Función para obtener los tipos desde el API
     const fetchTypes = async () => {
+        const token = localStorage.getItem('token');
+
         try {
-        const response = await axios.get('http://127.0.0.1:8000/detallesPost/typePost/');
+        const response = await axios.get('http://127.0.0.1:8000/detallesPost/typePost/', {
+            headers: {
+              Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+          });
         setTypes(response.data);
         } catch (error) {
             Swal.fire('Error', 'Content Types could not be loaded', 'error');
@@ -37,9 +43,14 @@ const TypeForm = () => {
     // Enviar el formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
 
         try {
-          const response = await axios.post('http://127.0.0.1:8000/detallesPost/typePost/', type);
+          const response = await axios.post('http://127.0.0.1:8000/detallesPost/typePost/', type, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+          });
           Swal.fire('Éxito', 'Type was added', 'success');
           setType({
             nombreTipo: '',
@@ -72,8 +83,14 @@ const TypeForm = () => {
 
     // Función para eliminar un tipo
     const deleteType = async (id) => {
+        const token = localStorage.getItem('token');
+
         try {
-            await axios.delete(`http://127.0.0.1:8000/detallesPost/typePost/${id}`);
+            await axios.delete(`http://127.0.0.1:8000/detallesPost/typePost/${id}`,{
+                headers: {
+                  Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                },
+              });
             Swal.fire('Éxito', 'Type deleted succesfully!', 'success');
             fetchTypes(); // Actualizar lista después de la eliminación
         } catch (error) {
@@ -82,6 +99,8 @@ const TypeForm = () => {
     };
 
     const selectTypeForEdit = async (type) => {
+        const token = localStorage.getItem('token');
+
         const { value: formValues } = await Swal.fire({
             title: "Modify Type",
             html:
@@ -111,6 +130,11 @@ const TypeForm = () => {
                 await axios.put(`http://127.0.0.1:8000/detallesPost/typePost/${type.id}`, {
                     nombreTipo: newName,
                     duracionTipo: newDuration
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                    },
                 });
                 Swal.fire('Success', 'Type was modified', 'success');
                 fetchTypes(); // Volvemos a cargar los tipos

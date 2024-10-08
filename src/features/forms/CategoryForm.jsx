@@ -19,8 +19,14 @@ const CategoryForm = () => {
 
     // Función para obtener las categorías desde el API
     const fetchCategories = async () => {
+        const token = localStorage.getItem('token');
+
         try {
-        const response = await axios.get('http://127.0.0.1:8000/detallesPost/categoryPost/');
+        const response = await axios.get('http://127.0.0.1:8000/detallesPost/categoryPost/', {
+            headers: {
+                Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+            },
+        });
         setCategories(response.data);
         console.log('categorias',categories)
         } catch (error) {
@@ -37,15 +43,23 @@ const CategoryForm = () => {
     // Enviar el formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
+
         if (!category) {
           Swal.fire('Error', 'Please, enter a category!', 'error');
           return;
         }
     
         try {
-          const response = await axios.post('http://127.0.0.1:8000/detallesPost/categoryPost/', {
-            nombreCategoria: category, // El nombre del campo dependerá de cómo está definida tu API
-          });
+          const response = await axios.post('http://127.0.0.1:8000/detallesPost/categoryPost/', 
+            {
+                nombreCategoria: category, // El nombre del campo dependerá de cómo está definida tu API
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}` // Agrega el token en el encabezado
+                },
+            });
     
           Swal.fire('Success', 'New category added!', 'success');
           setCategory(''); // Limpiar el campo de entrada
@@ -61,8 +75,14 @@ const CategoryForm = () => {
 
     // Función para eliminar una categoría
     const deleteCategory = async (id) => {
+        const token = localStorage.getItem('token');
+
         try {
-            await axios.delete(`http://127.0.0.1:8000/detallesPost/categoryPost/${id}`);
+            await axios.delete(`http://127.0.0.1:8000/detallesPost/categoryPost/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                  },
+            });
             Swal.fire('Success', 'Category was deleted!', 'success');
             fetchCategories(); // Actualizar lista después de la eliminación
         } catch (error) {
@@ -72,6 +92,7 @@ const CategoryForm = () => {
 
     // Función para seleccionar la categoría a editar
     const selectCategoryForEdit = async (category) => {
+        const token = localStorage.getItem('token');
         // setEditCategoryId(category.id);
         // setEditCategoryName(category.nombreCategoria);
         const { value: newCategoryName } = await Swal.fire({
@@ -92,7 +113,16 @@ const CategoryForm = () => {
     
             // Aquí llamamos a la función para actualizar la categoría
             try {
-                await axios.put(`http://127.0.0.1:8000/detallesPost/categoryPost/${category.id}`, { nombreCategoria: newCategoryName });
+                await axios.put(`http://127.0.0.1:8000/detallesPost/categoryPost/${category.id}`, 
+                { 
+                    nombreCategoria: newCategoryName
+                },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`, // Agrega el token en el encabezado
+                    },
+                }
+                );
                 Swal.fire('Success', 'Category modified correctly', 'success');
                 fetchCategories(); // Volvemos a cargar las categorías
                 setEditCategoryId(null); // Salir del modo de edición

@@ -45,6 +45,10 @@ const Dashboard = () => {
         navigate('/admin/Posts');
     };
 
+    const handlePostList = () => { //basicamente actualiza el array? de formData conforme se llenan los campos del form
+        navigate('/admin/PostList');
+    };
+
     return(
         <>
             <DashboardLayout>
@@ -68,6 +72,9 @@ const Dashboard = () => {
                     
                     <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handleAddPost}>
                     Create a new Post
+                    </button>
+                    <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handlePostList}>
+                    Post List
                     </button>
                 </div>
             </DashboardLayout>

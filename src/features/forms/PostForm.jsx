@@ -117,41 +117,68 @@ const PostForm = () => {
       };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        console.log(name,value)
-        // Update the post state
-        setPost((prevState) => {
-            // Check if the field is within idPostInfo
-            if (name in prevState.idPostInfo) {
-                let updatedValue = value; // Default to the current value
-    
-                // Handle specific validations
-                if (name === 'duracionPost') {
-                    // Convert to float
-                    updatedValue = parseFloat(value) || ''; // Set to empty string if invalid
-                } else if (name === 'idHostPost' || name === 'idCategoriaPost' || name === 'idTipoPost') {
-                    // Convert to integer
-                    updatedValue = parseInt(value) || ''; // Set to empty string if invalid
+        const { name, value, type } = e.target;
+        console.log(name,value,type)
+
+        // Check if the field is a file input
+        if (type === 'file') {
+            const file = e.target.files[0]; // Get the selected file
+
+            if (file) {
+                const reader = new FileReader();
+
+                // When the file is successfully read
+                reader.onloadend = () => {
+                    const base64Image = reader.result;
+
+                    // Update the state with the Base64 encoded image
+                    setPost((prevState) => ({
+                        ...prevState,
+                        idPostInfo: {
+                            ...prevState.idPostInfo,
+                            [name]: base64Image // Store the Base64 encoded image
+                        }
+                    }));
+                };
+
+                // Read the file as Data URL (Base64)
+                reader.readAsDataURL(file);
+            }
+        } else {
+            // Update the post state
+            setPost((prevState) => {
+                // Check if the field is within idPostInfo
+                if (name in prevState.idPostInfo) {
+                    let updatedValue = value; // Default to the current value
+        
+                    // Handle specific validations
+                    if (name === 'duracionPost') {
+                        // Convert to float
+                        updatedValue = parseFloat(value) || ''; // Set to empty string if invalid
+                    } else if (name === 'idHostPost' || name === 'idCategoriaPost' || name === 'idTipoPost') {
+                        // Convert to integer
+                        updatedValue = parseInt(value) || ''; // Set to empty string if invalid
+                    }
+        
+                    // Return new state with updated idPostInfo
+                    return {
+                        ...prevState,
+                        idPostInfo: {
+                            ...prevState.idPostInfo,
+                            [name]: updatedValue, // Set the updated value
+                        }
+                    };
                 }
-    
-                // Return new state with updated idPostInfo
+        
+                // For other fields, maintain the value of text
                 return {
                     ...prevState,
-                    idPostInfo: {
-                        ...prevState.idPostInfo,
-                        [name]: updatedValue, // Set the updated value
-                    }
+                    [name]: value // Set the updated value for non-idPostInfo fields
                 };
-            }
-    
-            // For other fields, maintain the value of text
-            return {
-                ...prevState,
-                [name]: value // Set the updated value for non-idPostInfo fields
-            };
-        });
-    };
-    
+            });
+
+        }
+    }
 
     return(
         <>
@@ -200,14 +227,22 @@ const PostForm = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <InputForm
+                            <label htmlFor="imageUpload">Upload Thumbnail for Video</label>
+                            <input
+                                type="file"
+                                id="thumbnailPost"
+                                name="thumbnailPost"
+                                accept="image/*"
+                                onChange={handleChange}
+                            />
+                            {/* <InputForm
                                 type="text"
                                 id="thumbnailPost"
                                 name="thumbnailPost"
                                 label="URL of the Thumbnail"
                                 value={post.idPostInfo.thumbnailPost}
                                 onChange={handleChange}
-                            />
+                            /> */}
                         </div>
                         <div className="mb-4">
                             <label htmlFor="idHostPost">Select a Host</label>

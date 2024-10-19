@@ -14,6 +14,8 @@ import UsersForm from './features/forms/UsersForm'
 import FormLayout from './components/FormLayout/FormLayout'
 import PostForm from './features/forms/PostForm'
 import ProtectedRoute from './auth/ProtectedRoute'
+import PostList from './features/Posts/PostList'
+import PostDetail from './features/Posts/PostDetail'
 //import { useAuth } from './auth'
 import './App.css'
 
@@ -36,6 +38,8 @@ const router = createBrowserRouter(createRoutesFromElements(
           <Route path='host' element={<HostForm/>}/>
           <Route path='users' element={<UsersForm/>}/>
           <Route path='Posts' element={<PostForm/>}/>
+          <Route path='PostList' element={<PostList/>}/>
+          <Route path='PostDetail/:id' element={<PostDetail/>}/>
         </Route>
 
     </Route>

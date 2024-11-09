@@ -8,14 +8,21 @@ const CategorySection = () => {
     const [categories, setCategories] = useState([]) //recuerda: get,set
 
     const fetchCategories = () => {
-        fetch('http://127.0.0.1:8000/detallesPost/categoryPost/')
-            .then(response => response.json())
-            .then(data => {
-                console.log('Response data:',data)
-                setCategories(data)
-            })
-            .catch(error => console.error('error fetching data:',error))
-    }
+        const token = localStorage.getItem('token');
+        fetch('http://127.0.0.1:8000/detallesPost/categoryPost/', {
+            method: 'GET', // Método de la solicitud (GET, POST, etc.)
+            headers: {
+                'Authorization': `Bearer ${token}`, // Agrega el token aquí
+                'Content-Type': 'application/json', // Asegúrate de enviar el tipo de contenido si es necesario
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response data:', data);
+            setCategories(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    };
 
     useEffect(() => {
         fetchCategories()

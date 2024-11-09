@@ -16,12 +16,15 @@ import PostForm from './features/forms/PostForm'
 import ProtectedRoute from './auth/ProtectedRoute'
 import PostList from './features/Posts/PostList'
 import PostDetail from './features/Posts/PostDetail'
+import EventForm from './features/events/EventsForm'
+import GridForm from './features/grid/GridForm'
+import GridInfo from './features/grid/GridInfo'
 //import { useAuth } from './auth'
 import './App.css'
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route>
-    <Route path='/'>
+    <Route path='/' element={<Layout/>}>
       <Route path='home' element={<HomePage/>}></Route>
       <Route path='library' element={<LibraryPage/>}></Route>
       <Route path='schedule' element={<SchedulePage/>}></Route>
@@ -40,6 +43,9 @@ const router = createBrowserRouter(createRoutesFromElements(
           <Route path='Posts' element={<PostForm/>}/>
           <Route path='PostList' element={<PostList/>}/>
           <Route path='PostDetail/:id' element={<PostDetail/>}/>
+          <Route path='Events' element={<EventForm/>}/>
+          <Route path='grid' element={<GridForm/>}/>
+          <Route path='grid-info' element={<GridInfo/>}/>
         </Route>
 
     </Route>

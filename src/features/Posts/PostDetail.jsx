@@ -2,12 +2,10 @@ import {React, useState, useEffect} from "react";
 import { useParams } from 'react-router-dom';
 import FormLayout from "../../components/FormLayout/FormLayout";
 import TitleForm from "../../components/FormLayout/TitleForm";
-import SpecialTitleForm from "../../components/FormLayout/SpecialTitleForm";
 import Containers from "../../components/FormLayout/Containers";
-import FilterButton from "../../components/PostLayout/FilterButton";
-import PostsTable from "../../components/PostLayout/PostsTable";
 import PostSubtitle from "../../components/PostLayout/PostSubtitle";
 import PostDetailText from "../../components/PostLayout/PostDetailText";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -23,7 +21,7 @@ const decimalToTimeString = (newTime) => {
 };
 
 const PostDetail = () => {
-
+    const navigate = useNavigate();
     const { id } = useParams(); // Obtiene el ID del post de la URL
     const [post, setPost] = useState([]);
     const [link, setLink] = useState("");
@@ -49,19 +47,6 @@ const PostDetail = () => {
         } catch (error) {
             Swal.fire('Error', 'Posts could not be loaded', 'error');
         }
-
-        // const driveLink = post.idPostInfo.urlPost
-        // setLink(driveLink)
-        // const decimal = post.idPostInfo.duracionPost
-        // setDuracionPost(decimal)
-        // const title = post.idPostInfo.tituloPost
-        // setTitulo(title)
-        // const description = post.idPostInfo.descripPost
-        // setDescripcion(description)
-        // const status = post.idPostInfo.idEstado_descripEstado
-        // setEstado(status)
-        // const comment = post.idPostInfo.comentarioPost
-        // setComentario(comment)
     };
 
     useEffect(() => {
@@ -104,6 +89,10 @@ const PostDetail = () => {
         }
     }, [duracionPost]);
 
+    const handlePostInfo = () => {
+        navigate('/admin/Events', { state: { post } });
+    };
+
     return(
         <>
            <FormLayout>
@@ -143,6 +132,11 @@ const PostDetail = () => {
                             <PostDetailText text={comentario}/>
                         </article>
                     </section>
+                </div>
+                <div className="mt-4">
+                    <button className="bg-green text-white font-subtitle py-2 px-4 rounded-full w-64 transition duration-500 hover:bg-watermelon" onClick={handlePostInfo}>
+                        Create an Event
+                    </button>
                 </div>
             </Containers>
            </FormLayout>

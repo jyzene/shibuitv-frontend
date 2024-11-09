@@ -46,7 +46,7 @@ const EventList = () => {
         <>
             <FormLayout>
                 <Containers>
-                    <SpecialTitleForm text="Post List"/>
+                    <SpecialTitleForm text="Events List"/>
                     <h4 className="text-m font-subtitle text-wood">Take a look at all the posts that have been created!</h4>
                     <div className="space-y-4 space-x-2">
                         <FilterButton label="Approved" />
